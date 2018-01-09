@@ -3,5 +3,5 @@ var app = require('./config/server');
 
 /* parametrizar a porta de escuta */
 app.listen(80, function(){
-	console.log('to ficandu bom');
+	console.log('deu pau');
 })
