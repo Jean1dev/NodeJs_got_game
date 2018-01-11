@@ -13,6 +13,14 @@
 	
 		<!-- incluindo css -->
 		<link href="css/style.css" rel="stylesheet">
+		<script type="text/javascript">
+			$(document).ready(function(){
+
+				$('#btn_voltar').click(function(){
+					window.location.href = '/'
+				});
+			});
+		</script>
 
 	</head>
 
@@ -22,7 +30,7 @@
 			<div class="container">
 				<form class="form-inline form-entrar">
 					<div class="form-group">				
-						<button type="button" class="btn btn-success">Voltar</button>
+						<button type="button" id="btn_voltar" class="btn btn-success">Voltar</button>
 					</div>
 				</form>
 			</div>
