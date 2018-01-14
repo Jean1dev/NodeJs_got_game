@@ -22,7 +22,7 @@
 				});
 
 				$('#btn_suditos').click(function(){
-					$('#aldeoes_erro').hide();
+					$('#msg').hide();
 					$.ajax({
 						url: '/suditos',
 						method: 'get',
@@ -33,16 +33,32 @@
 				});
 
 				$('#btn_pergaminhos').click(function(){
-					$('#aldeoes_erro').hide();
+					$('#msg').hide();
 					$.ajax({
 						url: '/Pergaminhos',
 						method: 'get',
 						success: function(data){
 							$('#acoes').html(data);
+							clearTimeout(TimerId);
+							cronometro();
 						}
 					});
 				});
 			});
+
+			var TimerId = null;
+			function cronometro(){
+				$('.tempo_restante').each(function(){
+					var segundos = $(this).html();
+					var segundos_atuais = parseInt(segundos) - 1;
+					if(segundos_atuais < 0){
+						window.location.href = '/jogo?msg=C';
+					}else{
+						var segundos = $(this).html(segundos_atuais);
+					}
+				});
+				TimerId = setTimeout('cronometro()', 1000);
+			}
 		</script>
 
 	</head>
@@ -59,9 +75,21 @@
 
 	    <div class="container">
 	    	
-	    	<% if(comando_invalido == 'S'){ %>
-	    		<div class="alert alert-danger" id="aldeoes_erro">
+	    	<% if(msg == 'E'){ %>
+	    		<div class="alert alert-danger" id="msg">
 	    			<strong>verifica os campos ai parça</strong>
+	    		</div>
+	    	<% }else if(msg == 'A'){ %>
+	    		<div class="alert alert-info" id="msg">
+	    			<strong>Acão realizada</strong>
+	    		</div>
+	    	<%} else if(msg == 'C'){ %>
+	    		<div class="alert alert-info" id="msg">
+	    			<strong>Acão Finalizada</strong>
+	    		</div>
+	     	<%} else if(msg == 'D'){ %>
+	    		<div class="alert alert-info" id="msg">
+	    			<strong>Sua acao foi revogada</strong>
 	    		</div>
 	    	<% } %>
 

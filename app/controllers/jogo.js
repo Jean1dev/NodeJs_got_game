@@ -4,10 +4,10 @@ module.exports.jogo = function(app, req, res){
 		res.render('index', {validacao: {}});
 	}
 
-	var comando_invalido = 'N';
+	var msg = '';
 
-	if(req.query.comando_invalido == 'S'){
-		comando_invalido = 'S';
+	if(req.query.msg != ''){
+		msg = req.query.msg;
 	}
 
 	var casa = req.session.casa;
@@ -15,7 +15,7 @@ module.exports.jogo = function(app, req, res){
 	var connection = app.config.dbconnection;
 	var jogoDAO = new app.app.models.jogoDAO(connection);
 
-	jogoDAO.iniciaJogo(res ,usuario, casa, comando_invalido);
+	jogoDAO.iniciaJogo(res ,usuario, casa, msg);
 
 };
 
@@ -37,7 +37,13 @@ module.exports.pergaminhos = function(app, req, res){
 	if(req.session.autorizado != true){
 		res.render('index', {validacao: {}});
 	}
-	res.render('pergaminhos', {validacao: {}});
+
+	var connection = app.config.dbconnection;
+	var jogoDAO = new app.app.models.jogoDAO(connection);
+	var usuario = req.session.usuario;
+
+	jogoDAO.getAcoes(usuario, res);
+
 }
 
 module.exports.ordernar_acao_sudito = function(app, req, res){
@@ -49,9 +55,24 @@ module.exports.ordernar_acao_sudito = function(app, req, res){
 	var err = req.validationErrors();
 
 	if(err){
-		res.redirect('jogo?comando_invalido=S');
+		res.redirect('jogo?msg=E');
 		return;
 	}
 
+	var connection = app.config.dbconnection;
+	var jogoDAO = new app.app.models.jogoDAO(connection);
 
+	dados.usuario = req.session.usuario;
+	jogoDAO.acao(dados);
+
+	res.redirect('jogo?msg=A');
+}
+
+module.exports.revogar_acao = function(app, req, res){
+	var url = req.query;
+	var connection = app.config.dbconnection;
+	var jogoDAO = new app.app.models.jogoDAO(connection);
+	var id = url.id_acao;
+
+	jogoDAO.revogar_acao(id, res);
 }
