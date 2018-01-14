@@ -2,6 +2,10 @@ module.exports.index = function(application, req, res){
 	res.render('index', {validacao: {}});
 };
 
+module.exports.success = function(application, req, res){
+	res.render('success');
+};
+
 module.exports.autenticar = function(application, req, res){
 	var dadosForm = req.body;
 

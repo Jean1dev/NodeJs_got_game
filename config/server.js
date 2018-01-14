@@ -44,5 +44,18 @@ consign()
 	.then('app/controllers')
 	.into(app);
 
+/*middleware que configura pagia de status*/
+app.use(function(req, res, next){
+	res.status(404).send('pagina não encontrada');
+
+	next();
+});
+
+app.use(function(err, req, res, next){
+	res.status(500).send('erro interno');
+
+	next();
+});
+
 /* exportar o objeto app */
 module.exports = app;

@@ -1,16 +1,22 @@
+var crypto = require('crypto');
+
 function UsuarioDAO(connection){
 	this._connection = connection();
 }
 
-UsuarioDAO.prototype.insert = function(usuario){
+UsuarioDAO.prototype.insert = function(usuario, response){
 	this._connection.open(function(err, mongoClient){
 
 		if(err){
 			console.log("DEUUUUUUUUUUU PAU FUDIDO")
 		}
 		mongoClient.collection('usuarios', function(err, res){
+			var senha_crypto = crypto.createHash('md5').update(usuario.senha).digest('hex');
+			usuario.senha = senha_crypto;
+
 			res.insert(usuario);
 			mongoClient.close();
+			response.redirect('success');
 		});
 	});
 }
@@ -24,6 +30,9 @@ UsuarioDAO.prototype.autenticar = function(usuario, req, response){
 		}
 
 		mongoClient.collection('usuarios', function(err, res){
+			var senha_crypto = crypto.createHash('md5').update(usuario.senha).digest('hex');
+			usuario.senha = senha_crypto;
+
 			res.find(usuario).toArray(function(err, res){
 
 				if(res[0] != undefined){
@@ -35,7 +44,8 @@ UsuarioDAO.prototype.autenticar = function(usuario, req, response){
 				if(req.session.autorizado){
 					response.redirect('jogo');
 				}else{
-					response.send('usuario nao existe');
+					usuario.msg = 'Usuario ou senha Incorretos';
+					response.render('index', {validacao: usuario});
 				}
 
 			});
