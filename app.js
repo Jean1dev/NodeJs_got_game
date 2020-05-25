@@ -2,6 +2,6 @@
 var app = require('./config/server');
 
 /* parametrizar a porta de escuta */
-app.listen(80, function(){
-	console.log('ssss');
+app.listen(8080, function(){
+	console.log('rodando na porta 8080');
 })
