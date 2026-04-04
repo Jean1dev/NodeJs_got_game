@@ -1,37 +1,254 @@
-*,
-*::before,
-*::after {
+/* ============================================
+   GOT GAME — Design System
+   ============================================ */
+
+:root {
+  --gold:          #c9a84c;
+  --gold-bright:   #ffd700;
+  --gold-dark:     #7a5c1e;
+  --gold-glow:     rgba(201, 168, 76, 0.45);
+  --gold-border:   rgba(201, 168, 76, 0.35);
+
+  --red-blood:     #8b1a1a;
+  --red-fire:      #c0392b;
+
+  --bg-void:       #070604;
+  --bg-deep:       #0d0b08;
+  --bg-panel:      rgba(8, 6, 3, 0.92);
+  --bg-card:       rgba(15, 11, 6, 0.88);
+  --bg-glass:      rgba(20, 15, 8, 0.75);
+  --bg-hover:      rgba(201, 168, 76, 0.08);
+  --bg-active:     rgba(201, 168, 76, 0.15);
+
+  --text-parchment: #e8d5a3;
+  --text-dim:       #9c8660;
+  --text-faint:     #5a4a30;
+
+  --border-dark:   rgba(201, 168, 76, 0.18);
+  --border-mid:    rgba(201, 168, 76, 0.35);
+  --border-bright: rgba(201, 168, 76, 0.65);
+
+  --shadow-card:   0 8px 32px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--border-dark);
+  --shadow-glow:   0 0 20px var(--gold-glow), 0 0 40px rgba(201, 168, 76, 0.15);
+  --shadow-inset:  inset 0 1px 0 rgba(201, 168, 76, 0.1);
+
+  --radius-sm:     4px;
+  --radius-md:     8px;
+  --radius-lg:     12px;
+
+  --font-heading:  'Cinzel', Georgia, serif;
+  --font-body:     'Crimson Text', Georgia, serif;
+  --font-ui:       'Cinzel', Georgia, serif;
+
+  --transition:    all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============ Reset & Base ============ */
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #1a1a1a;
-  color: #e8d5a3;
+  background-color: var(--bg-void);
+  color: var(--text-parchment);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: 0.05em;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.3);
+/* ============ Scrollbar ============ */
+::-webkit-scrollbar        { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: rgba(0,0,0,0.4); }
+::-webkit-scrollbar-thumb  { background: var(--gold-dark); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* ============ Form Controls ============ */
+.form-control,
+.form-select {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  border: 1px solid var(--border-dark) !important;
+  color: var(--text-parchment) !important;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: var(--transition);
 }
 
-::-webkit-scrollbar-thumb {
-  background: #8b7536;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #ffc107;
-}
+.form-control::placeholder { color: var(--text-faint); }
+.form-select option         { background-color: #1a1208; color: var(--text-parchment); }
 
 .form-control:focus,
 .form-select:focus {
-  border-color: #ffc107;
-  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 3px var(--gold-glow) !important;
+  background-color: rgba(0, 0, 0, 0.75) !important;
 }
+
+.form-label {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+/* ============ Buttons ============ */
+.btn-got {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--gold-dark);
+  background: linear-gradient(180deg, #2a1f08 0%, #1a1208 100%);
+  color: var(--gold);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-got::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(201,168,76,0.12) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.btn-got:hover {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+  box-shadow: 0 0 16px var(--gold-glow);
+}
+.btn-got:hover::before { opacity: 1; }
+
+.btn-got-primary {
+  background: linear-gradient(180deg, #3d2d0a 0%, #251b06 100%);
+  border-color: var(--gold);
+  color: var(--gold-bright);
+}
+.btn-got-primary:hover {
+  background: linear-gradient(180deg, #4d3a0e 0%, #2f2108 100%);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-got-danger {
+  border-color: rgba(139, 26, 26, 0.6);
+  color: #e05858;
+  background: linear-gradient(180deg, #2a0808 0%, #1a0505 100%);
+}
+.btn-got-danger:hover {
+  border-color: var(--red-fire);
+  color: #ff7070;
+  box-shadow: 0 0 14px rgba(192, 57, 43, 0.4);
+}
+
+/* ============ Divider ============ */
+.got-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-faint);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 16px 0;
+}
+.got-divider::before,
+.got-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-mid), transparent);
+}
+
+/* ============ Alert / Toast ============ */
+.got-alert {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  border-left: 3px solid;
+  animation: slideDown 0.3s ease;
+}
+.got-alert-success {
+  background: rgba(25, 80, 40, 0.35);
+  border-color: #4caf50;
+  color: #a8e6b0;
+}
+.got-alert-error {
+  background: rgba(100, 20, 20, 0.35);
+  border-color: var(--red-fire);
+  color: #f4a0a0;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ Card ============ */
+.got-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+
+.got-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-border), transparent);
+}
+
+/* ============ Ornament ============ */
+.got-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--gold-dark);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+.got-ornament::before,
+.got-ornament::after {
+  content: '✦';
+  color: var(--gold-dark);
+  font-size: 0.5rem;
+}
+
+/* ============ Animations ============ */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pulseGold {
+  0%, 100% { box-shadow: 0 0 8px var(--gold-glow); }
+  50%       { box-shadow: 0 0 20px var(--gold-glow), 0 0 40px rgba(201,168,76,0.2); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.animate-fade { animation: fadeIn 0.4s ease; }
+.animate-pulse-gold { animation: pulseGold 3s infinite; }

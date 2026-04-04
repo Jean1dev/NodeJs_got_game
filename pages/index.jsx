@@ -14,18 +14,15 @@ export default function Login() {
     e.preventDefault();
     setErro('');
     setCarregando(true);
-
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-
       const data = await res.json();
-
       if (!res.ok) {
-        setErro(data.error || 'Erro ao fazer login');
+        setErro(data.error || 'Usuário ou senha inválidos');
       } else {
         router.push('/jogo');
       }
@@ -39,36 +36,37 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Got Game - Login</title>
+        <title>Got Game — Entrar</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-        />
       </Head>
 
-      <div className="login-bg d-flex align-items-center justify-content-center min-vh-100">
-        <div className="card login-card shadow-lg">
-          <div className="card-body p-4">
-            <div className="text-center mb-4">
-              <img
-                src="/images/game_of_thrones_logo.jpg"
-                alt="Game of Thrones"
-                className="img-fluid logo"
-              />
-            </div>
+      <div className="scene">
+        {/* mapa com overlay escuro */}
+        <div className="scene-bg" />
+        <div className="scene-overlay" />
+
+        <div className="login-wrapper animate-fade">
+          {/* Logo */}
+          <div className="logo-wrap">
+            <img src="/images/game_of_thrones_logo.jpg" alt="Game of Thrones" className="logo-img" />
+          </div>
+
+          {/* Separador ornamental */}
+          <div className="got-ornament mb-4">Reinos de Westeros</div>
+
+          {/* Card */}
+          <div className="got-card login-card">
+            <h2 className="login-title">Acesso ao Reino</h2>
 
             {erro && (
-              <div className="alert alert-danger" role="alert">
-                {erro}
+              <div className="got-alert got-alert-error mb-4">
+                ⚠ {erro}
               </div>
             )}
 
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label htmlFor="usuario" className="form-label text-light">
-                  Usuário
-                </label>
+            <form onSubmit={handleSubmit} noValidate>
+              <div className="field-group">
+                <label htmlFor="usuario" className="form-label">Usuário</label>
                 <input
                   id="usuario"
                   type="text"
@@ -77,13 +75,12 @@ export default function Login() {
                   onChange={e => setForm({ ...form, usuario: e.target.value })}
                   required
                   autoFocus
+                  autoComplete="username"
                 />
               </div>
 
-              <div className="mb-3">
-                <label htmlFor="senha" className="form-label text-light">
-                  Senha
-                </label>
+              <div className="field-group">
+                <label htmlFor="senha" className="form-label">Senha</label>
                 <input
                   id="senha"
                   type="password"
@@ -91,42 +88,144 @@ export default function Login() {
                   value={form.senha}
                   onChange={e => setForm({ ...form, senha: e.target.value })}
                   required
+                  autoComplete="current-password"
                 />
               </div>
 
-              <div className="d-grid gap-2">
-                <button
-                  type="submit"
-                  className="btn btn-warning fw-bold"
-                  disabled={carregando}
-                >
-                  {carregando ? 'Entrando...' : 'Entrar'}
-                </button>
-                <Link href="/cadastro" className="btn btn-outline-light">
-                  Criar conta
-                </Link>
-              </div>
+              <button
+                type="submit"
+                className={`btn-got btn-got-primary submit-btn ${carregando ? 'loading' : ''}`}
+                disabled={carregando}
+              >
+                {carregando ? (
+                  <span className="spinner">⟳ Verificando...</span>
+                ) : (
+                  '⚔ Entrar no Reino'
+                )}
+              </button>
             </form>
+
+            <div className="got-divider">ou</div>
+
+            <Link href="/cadastro" className="btn-got register-btn">
+              ✦ Criar Nova Conta
+            </Link>
           </div>
+
+          <p className="footer-text">
+            O inverno está chegando — e o trono espera por você.
+          </p>
         </div>
       </div>
 
       <style jsx>{`
-        .login-bg {
-          background-color: #1a1a1a;
+        /* ── Scene ── */
+        .scene {
+          position: relative;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+        }
+
+        .scene-bg {
+          position: fixed;
+          inset: 0;
           background-image: url('/images/mapa.gif');
           background-size: cover;
           background-position: center;
+          filter: brightness(0.35) saturate(0.6);
+          z-index: 0;
         }
-        .login-card {
-          background-color: rgba(0, 0, 0, 0.85);
-          border: 1px solid #8b7536;
-          min-width: 350px;
-          max-width: 400px;
+
+        .scene-overlay {
+          position: fixed;
+          inset: 0;
+          background: radial-gradient(ellipse at center, transparent 0%, rgba(7,6,4,0.7) 80%);
+          z-index: 1;
+        }
+
+        /* ── Wrapper ── */
+        .login-wrapper {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
           width: 100%;
+          max-width: 420px;
+          padding: 24px 16px;
         }
-        .logo {
-          max-height: 120px;
+
+        /* ── Logo ── */
+        .logo-wrap {
+          margin-bottom: 12px;
+        }
+
+        .logo-img {
+          max-height: 100px;
+          max-width: 280px;
+          object-fit: contain;
+          filter: drop-shadow(0 0 18px rgba(201,168,76,0.5));
+        }
+
+        /* ── Card ── */
+        .login-card {
+          width: 100%;
+          padding: 32px;
+        }
+
+        .login-title {
+          font-size: 1.1rem;
+          letter-spacing: 0.15em;
+          text-align: center;
+          color: var(--gold);
+          margin-bottom: 24px;
+          text-transform: uppercase;
+        }
+
+        /* ── Fields ── */
+        .field-group {
+          margin-bottom: 18px;
+        }
+
+        /* ── Submit ── */
+        .submit-btn {
+          width: 100%;
+          padding: 12px;
+          margin-top: 8px;
+          font-size: 0.85rem;
+        }
+
+        .spinner {
+          display: inline-block;
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+
+        /* ── Register link ── */
+        .register-btn {
+          display: block;
+          width: 100%;
+          text-align: center;
+          padding: 11px;
+          text-decoration: none;
+          font-size: 0.8rem;
+        }
+
+        /* ── Footer ── */
+        .footer-text {
+          margin-top: 24px;
+          font-family: var(--font-body);
+          font-style: italic;
+          font-size: 0.85rem;
+          color: var(--text-faint);
+          text-align: center;
         }
       `}</style>
     </>
