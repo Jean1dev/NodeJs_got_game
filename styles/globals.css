@@ -1,46 +1,65 @@
 /* ============================================
-   GOT GAME — Design System
+   GOT GAME — Design System (Pergaminho / Medieval)
    ============================================ */
 
 :root {
-  --gold:          #c9a84c;
-  --gold-bright:   #ffd700;
-  --gold-dark:     #7a5c1e;
-  --gold-glow:     rgba(201, 168, 76, 0.45);
-  --gold-border:   rgba(201, 168, 76, 0.35);
+  /* ── Gold leaf ── */
+  --gold:          #9a7b34;
+  --gold-bright:   #d8b65e;
+  --gold-leaf:     #b6924a;
+  --gold-dark:     #7a5f24;
+  --gold-soft:     #cbb27a;
+  --gold-glow:     rgba(154, 123, 52, 0.35);
+  --gold-border:   rgba(182, 151, 92, 0.45);
 
-  --red-blood:     #8b1a1a;
-  --red-fire:      #c0392b;
+  /* ── Wax / blood ── */
+  --red-wax:       #8a2a22;
+  --red-fire:      #b8463a;
+  --red-deep:      #5e1c16;
 
-  --bg-void:       #070604;
-  --bg-deep:       #0d0b08;
-  --bg-panel:      rgba(8, 6, 3, 0.92);
-  --bg-card:       rgba(15, 11, 6, 0.88);
-  --bg-glass:      rgba(20, 15, 8, 0.75);
-  --bg-hover:      rgba(201, 168, 76, 0.08);
-  --bg-active:     rgba(201, 168, 76, 0.15);
+  /* ── Surfaces ── */
+  --vellum:        #211b12;
+  --parchment:     #ece0c4;
+  --parchment-hi:  #f6edd7;
+  --field:         #fffdf6;
+  --leather:       #cdb787;
+  --leather-2:     #c9b487;
 
-  --text-parchment: #e8d5a3;
-  --text-dim:       #9c8660;
-  --text-faint:     #5a4a30;
+  --bg-hover:      rgba(120, 90, 40, 0.07);
+  --bg-active:     rgba(154, 123, 52, 0.14);
 
-  --border-dark:   rgba(201, 168, 76, 0.18);
-  --border-mid:    rgba(201, 168, 76, 0.35);
-  --border-bright: rgba(201, 168, 76, 0.65);
+  /* ── Ink ── */
+  --ink:           #2c2114;
+  --ink-body:      #6e5a3a;
+  --ink-dim:       #7d6a48;
+  --ink-faint:     #8a7654;
+  --ink-leather:   #4a3a20;
 
-  --shadow-card:   0 8px 32px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--border-dark);
-  --shadow-glow:   0 0 20px var(--gold-glow), 0 0 40px rgba(201, 168, 76, 0.15);
-  --shadow-inset:  inset 0 1px 0 rgba(201, 168, 76, 0.1);
+  /* ── Borders ── */
+  --border-dark:   rgba(120, 90, 40, 0.3);
+  --border-mid:    rgba(154, 123, 52, 0.45);
+  --border-bright: rgba(182, 146, 74, 0.7);
+
+  /* ── Shadows ── */
+  --shadow-card:   0 36px 70px -28px rgba(0, 0, 0, 0.7),
+                   inset 0 0 0 1px rgba(255, 250, 235, 0.45);
+  --shadow-glow:   0 8px 22px -10px rgba(154, 123, 52, 0.8);
+  --shadow-inset:  inset 0 1px 0 rgba(255, 255, 255, 0.4);
 
   --radius-sm:     4px;
-  --radius-md:     8px;
-  --radius-lg:     12px;
+  --radius-md:     6px;
+  --radius-lg:     8px;
 
   --font-heading:  'Cinzel', Georgia, serif;
-  --font-body:     'Crimson Text', Georgia, serif;
+  --font-body:     'EB Garamond', Georgia, serif;
   --font-ui:       'Cinzel', Georgia, serif;
 
   --transition:    all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Reusable parchment fill ── */
+  --parchment-fill:
+    repeating-linear-gradient(94deg, rgba(122,92,42,0.035) 0px, rgba(122,92,42,0.035) 1px, transparent 1px, transparent 6px),
+    radial-gradient(125% 95% at 24% 6%, #f6edd7 0%, #ecddbc 46%, #ddc99c 100%);
 }
 
 /* ============ Reset & Base ============ */
@@ -51,8 +70,8 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: var(--bg-void);
-  color: var(--text-parchment);
+  background-color: var(--vellum);
+  color: var(--ink-body);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.6;
@@ -62,96 +81,105 @@ html, body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   letter-spacing: 0.05em;
+  color: var(--ink);
 }
 
 /* ============ Scrollbar ============ */
-::-webkit-scrollbar        { width: 5px; height: 5px; }
-::-webkit-scrollbar-track  { background: rgba(0,0,0,0.4); }
-::-webkit-scrollbar-thumb  { background: var(--gold-dark); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: rgba(74, 58, 32, 0.12); }
+::-webkit-scrollbar-thumb  { background: var(--gold-leaf); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
 
 /* ============ Form Controls ============ */
 .form-control,
 .form-select {
-  background-color: rgba(0, 0, 0, 0.6) !important;
-  border: 1px solid var(--border-dark) !important;
-  color: var(--text-parchment) !important;
+  display: block;
+  width: 100%;
+  background-color: var(--field) !important;
+  border: 1px solid rgba(120, 90, 40, 0.4) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--ink) !important;
   font-family: var(--font-body);
   font-size: 1rem;
+  padding: 10px 13px;
   transition: var(--transition);
 }
 
-.form-control::placeholder { color: var(--text-faint); }
-.form-select option         { background-color: #1a1208; color: var(--text-parchment); }
+.form-control::placeholder { color: rgba(125, 106, 72, 0.7); font-style: italic; }
+.form-select option         { background-color: var(--field); color: var(--ink); }
 
 .form-control:focus,
 .form-select:focus {
-  border-color: var(--gold) !important;
-  box-shadow: 0 0 0 3px var(--gold-glow) !important;
-  background-color: rgba(0, 0, 0, 0.75) !important;
+  outline: none;
+  border-color: var(--gold-leaf) !important;
+  box-shadow: 0 0 0 3px rgba(216, 182, 94, 0.25) !important;
+  background-color: #fff !important;
 }
 
 .form-label {
+  display: block;
   font-family: var(--font-ui);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-dim);
-  margin-bottom: 6px;
+  color: var(--ink-dim);
+  margin-bottom: 7px;
 }
 
 /* ============ Buttons ============ */
 .btn-got {
   font-family: var(--font-ui);
-  font-size: 0.8rem;
-  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 10px 24px;
+  padding: 11px 24px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--gold-dark);
-  background: linear-gradient(180deg, #2a1f08 0%, #1a1208 100%);
-  color: var(--gold);
+  border: 1px solid var(--gold-leaf);
+  background: transparent;
+  color: var(--gold-dark);
   cursor: pointer;
   transition: var(--transition);
   position: relative;
   overflow: hidden;
 }
 
-.btn-got::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(201,168,76,0.12) 0%, transparent 100%);
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
 .btn-got:hover {
-  border-color: var(--gold);
-  color: var(--gold-bright);
-  box-shadow: 0 0 16px var(--gold-glow);
+  border-color: var(--gold-dark);
+  background: rgba(154, 123, 52, 0.1);
+  color: var(--ink);
 }
-.btn-got:hover::before { opacity: 1; }
 
 .btn-got-primary {
-  background: linear-gradient(180deg, #3d2d0a 0%, #251b06 100%);
-  border-color: var(--gold);
-  color: var(--gold-bright);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  background: linear-gradient(180deg, #b6924a 0%, #9a7b34 100%);
+  border: 1px solid var(--gold-dark);
+  color: #2a1f08;
+  box-shadow: var(--shadow-glow), var(--shadow-inset);
 }
 .btn-got-primary:hover {
-  background: linear-gradient(180deg, #4d3a0e 0%, #2f2108 100%);
-  box-shadow: var(--shadow-glow);
+  background: linear-gradient(180deg, #c2a154 0%, #a6863a 100%);
+  border-color: var(--gold-dark);
+  color: #2a1f08;
+  box-shadow: 0 10px 26px -10px rgba(154, 123, 52, 0.9), var(--shadow-inset);
 }
 
 .btn-got-danger {
-  border-color: rgba(139, 26, 26, 0.6);
-  color: #e05858;
-  background: linear-gradient(180deg, #2a0808 0%, #1a0505 100%);
+  border-color: rgba(138, 42, 34, 0.5);
+  color: var(--red-wax);
+  background: rgba(138, 42, 34, 0.08);
 }
 .btn-got-danger:hover {
-  border-color: var(--red-fire);
-  color: #ff7070;
-  box-shadow: 0 0 14px rgba(192, 57, 43, 0.4);
+  border-color: var(--red-wax);
+  color: var(--red-deep);
+  background: rgba(138, 42, 34, 0.16);
+}
+
+.btn-got:disabled,
+.btn-got-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* ============ Divider ============ */
@@ -159,11 +187,12 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: var(--text-faint);
-  font-size: 0.7rem;
+  color: var(--gold);
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin: 16px 0;
+  margin: 18px 0;
 }
 .got-divider::before,
 .got-divider::after {
@@ -173,24 +202,24 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(90deg, transparent, var(--border-mid), transparent);
 }
 
-/* ============ Alert / Toast ============ */
+/* ============ Alert ============ */
 .got-alert {
   font-family: var(--font-body);
   font-size: 0.95rem;
   border-radius: var(--radius-sm);
-  padding: 10px 16px;
+  padding: 11px 16px;
   border-left: 3px solid;
   animation: slideDown 0.3s ease;
 }
 .got-alert-success {
-  background: rgba(25, 80, 40, 0.35);
-  border-color: #4caf50;
-  color: #a8e6b0;
+  background: rgba(74, 110, 60, 0.13);
+  border-color: #4a6e3c;
+  color: #3c5a30;
 }
 .got-alert-error {
-  background: rgba(100, 20, 20, 0.35);
-  border-color: var(--red-fire);
-  color: #f4a0a0;
+  background: rgba(138, 42, 34, 0.1);
+  border-color: var(--red-wax);
+  color: var(--red-deep);
 }
 
 @keyframes slideDown {
@@ -198,22 +227,24 @@ h1, h2, h3, h4, h5, h6 {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ============ Card ============ */
+/* ============ Card (parchment) ============ */
 .got-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-dark);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
   position: relative;
+  border: 1px solid #b6975c;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  background-color: var(--parchment);
+  background-image: var(--parchment-fill);
   overflow: hidden;
 }
 
+/* gold top hairline */
 .got-card::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold-border), transparent);
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #b6924a 18%, #d8b65e 50%, #b6924a 82%, transparent);
 }
 
 /* ============ Ornament ============ */
@@ -221,8 +252,9 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  color: var(--gold-dark);
+  gap: 12px;
+  color: var(--gold);
+  font-family: var(--font-ui);
   font-size: 0.7rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -230,7 +262,7 @@ h1, h2, h3, h4, h5, h6 {
 .got-ornament::before,
 .got-ornament::after {
   content: '✦';
-  color: var(--gold-dark);
+  color: var(--gold-soft);
   font-size: 0.5rem;
 }
 
@@ -241,8 +273,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes pulseGold {
-  0%, 100% { box-shadow: 0 0 8px var(--gold-glow); }
-  50%       { box-shadow: 0 0 20px var(--gold-glow), 0 0 40px rgba(201,168,76,0.2); }
+  0%, 100% { box-shadow: 0 6px 16px rgba(0,0,0,0.25); }
+  50%       { box-shadow: 0 6px 22px rgba(0,0,0,0.3), 0 0 18px rgba(184,70,58,0.3); }
 }
 
 @keyframes shimmer {
@@ -252,3 +284,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .animate-fade { animation: fadeIn 0.4s ease; }
 .animate-pulse-gold { animation: pulseGold 3s infinite; }
+
+/* ============ Spacing helpers (from Bootstrap usage) ============ */
+.mt-2 { margin-top: 0.5rem; }
+.mb-4 { margin-bottom: 1.5rem; }

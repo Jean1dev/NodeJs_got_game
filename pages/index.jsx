@@ -41,21 +41,10 @@ export default function Login() {
       </Head>
 
       <div className="scene">
-        {/* mapa com overlay escuro */}
-        <div className="scene-bg" />
-        <div className="scene-overlay" />
-
         <div className="login-wrapper animate-fade">
-          {/* Logo */}
-          <div className="logo-wrap">
-            <img src="/images/game_of_thrones_logo.jpg" alt="Game of Thrones" className="logo-img" />
-          </div>
-
-          {/* Separador ornamental */}
-          <div className="got-ornament mb-4">Reinos de Westeros</div>
-
           {/* Card */}
           <div className="got-card login-card">
+            <div className="login-eyebrow">✦ &nbsp; Reinos de Westeros &nbsp; ✦</div>
             <h2 className="login-title">Acesso ao Reino</h2>
 
             {erro && (
@@ -126,63 +115,45 @@ export default function Login() {
           display: flex;
           align-items: center;
           justify-content: center;
-          overflow: hidden;
-        }
-
-        .scene-bg {
-          position: fixed;
-          inset: 0;
-          background-image: url('/images/mapa.gif');
-          background-size: cover;
-          background-position: center;
-          filter: brightness(0.35) saturate(0.6);
-          z-index: 0;
-        }
-
-        .scene-overlay {
-          position: fixed;
-          inset: 0;
-          background: radial-gradient(ellipse at center, transparent 0%, rgba(7,6,4,0.7) 80%);
-          z-index: 1;
+          padding: 24px 16px;
+          background-color: var(--vellum);
+          background-image: radial-gradient(120% 80% at 50% -10%, #2e261a 0%, #1d1810 70%);
         }
 
         /* ── Wrapper ── */
         .login-wrapper {
           position: relative;
-          z-index: 2;
           display: flex;
           flex-direction: column;
           align-items: center;
           width: 100%;
           max-width: 420px;
-          padding: 24px 16px;
-        }
-
-        /* ── Logo ── */
-        .logo-wrap {
-          margin-bottom: 12px;
-        }
-
-        .logo-img {
-          max-height: 100px;
-          max-width: 280px;
-          object-fit: contain;
-          filter: drop-shadow(0 0 18px rgba(201,168,76,0.5));
         }
 
         /* ── Card ── */
         .login-card {
           width: 100%;
-          padding: 32px;
+          padding: 40px 36px 36px;
+        }
+
+        .login-eyebrow {
+          font-family: var(--font-ui);
+          font-size: 0.7rem;
+          letter-spacing: 0.34em;
+          text-transform: uppercase;
+          color: var(--gold);
+          text-align: center;
+          margin-bottom: 12px;
         }
 
         .login-title {
-          font-size: 1.1rem;
-          letter-spacing: 0.15em;
+          font-family: var(--font-heading);
+          font-weight: 700;
+          font-size: 1.5rem;
+          letter-spacing: 0.05em;
           text-align: center;
-          color: var(--gold);
-          margin-bottom: 24px;
-          text-transform: uppercase;
+          color: var(--ink);
+          margin-bottom: 26px;
         }
 
         /* ── Fields ── */
@@ -193,9 +164,8 @@ export default function Login() {
         /* ── Submit ── */
         .submit-btn {
           width: 100%;
-          padding: 12px;
+          padding: 14px;
           margin-top: 8px;
-          font-size: 0.85rem;
         }
 
         .spinner {
@@ -213,9 +183,8 @@ export default function Login() {
           display: block;
           width: 100%;
           text-align: center;
-          padding: 11px;
+          padding: 12px;
           text-decoration: none;
-          font-size: 0.8rem;
         }
 
         /* ── Footer ── */
@@ -223,8 +192,8 @@ export default function Login() {
           margin-top: 24px;
           font-family: var(--font-body);
           font-style: italic;
-          font-size: 0.85rem;
-          color: var(--text-faint);
+          font-size: 0.92rem;
+          color: var(--ink-faint);
           text-align: center;
         }
       `}</style>

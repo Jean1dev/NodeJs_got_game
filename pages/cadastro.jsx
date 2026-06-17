@@ -70,26 +70,28 @@ export default function Cadastro() {
       </Head>
 
       <div className="scene">
-        <div className="scene-bg" />
-        <div className="scene-overlay" />
-
         <div className="page-wrap animate-fade">
-          {/* Header */}
-          <div className="page-header">
-            <img src="/images/game_of_thrones_logo.jpg" alt="Game of Thrones" className="header-logo" />
-            <div className="got-ornament mt-2">Juramento de Lealdade</div>
-          </div>
-
           <div className="got-card main-card">
+            {/* Header */}
+            <div className="card-header">
+              <div className="eyebrow">✦ &nbsp; Game of Thrones &nbsp; ✦</div>
+              <h2 className="card-title">Juramento de Lealdade</h2>
+              <p className="card-sub">
+                {etapa === 1
+                  ? 'Apresente-se diante dos sete reinos.'
+                  : 'Diante dos sete reinos, a qual casa você jurará sua espada?'}
+              </p>
+            </div>
+
             {/* Etapas */}
             <div className="steps-bar">
               <div className={`step ${etapa >= 1 ? 'active' : ''}`}>
-                <span className="step-num">1</span>
+                <span className="step-num">I</span>
                 <span className="step-label">Identidade</span>
               </div>
               <div className="step-line" />
               <div className={`step ${etapa >= 2 ? 'active' : ''}`}>
-                <span className="step-num">2</span>
+                <span className="step-num">II</span>
                 <span className="step-label">Sua Casa</span>
               </div>
             </div>
@@ -143,8 +145,6 @@ export default function Cadastro() {
             {/* ── Etapa 2: escolha de casa ── */}
             {etapa === 2 && (
               <form onSubmit={handleSubmit} noValidate className="animate-fade">
-                <p className="choose-label">Escolha a casa à qual você jurará lealdade:</p>
-
                 <div className="houses-grid">
                   {CASAS.map(({ nome, lema }) => (
                     <button
@@ -153,14 +153,16 @@ export default function Cadastro() {
                       className={`house-card ${form.casa === nome ? 'selected' : ''}`}
                       onClick={() => setForm({ ...form, casa: nome })}
                     >
-                      <img
-                        src={`/images/casa_${nome.toLowerCase()}.jpg`}
-                        alt={`Casa ${nome}`}
-                        className="house-img"
-                      />
+                      {form.casa === nome && <span className="house-seal">✦</span>}
+                      <div className="house-img-frame">
+                        <img
+                          src={`/images/casa_${nome.toLowerCase()}.jpg`}
+                          alt={`Casa ${nome}`}
+                          className="house-img"
+                        />
+                      </div>
                       <div className="house-name">{nome}</div>
-                      <div className="house-lema">"{lema}"</div>
-                      {form.casa === nome && <div className="house-check">✦</div>}
+                      <div className="house-lema">“{lema}”</div>
                     </button>
                   ))}
                 </div>
@@ -178,19 +180,19 @@ export default function Cadastro() {
                     className="btn-got btn-got-primary"
                     disabled={!form.casa || carregando}
                   >
-                    {carregando ? 'Registrando...' : '⚔ Jurar Lealdade'}
+                    {carregando
+                      ? 'Registrando...'
+                      : `Jurar Lealdade${form.casa ? ` à Casa ${form.casa}` : ''} ⚔`}
                   </button>
                 </div>
               </form>
             )}
-          </div>
 
-          <p className="back-link">
-            Já possui conta?{' '}
-            <Link href="/" style={{ color: 'var(--gold)', textDecoration: 'none' }}>
-              Entrar no reino
-            </Link>
-          </p>
+            <div className="card-foot">
+              Já possui conta?{' '}
+              <Link href="/" className="foot-link">Entrar no reino</Link>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -201,52 +203,51 @@ export default function Cadastro() {
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 24px 16px;
-        }
-
-        .scene-bg {
-          position: fixed;
-          inset: 0;
-          background-image: url('/images/mapa.gif');
-          background-size: cover;
-          background-position: center;
-          filter: brightness(0.3) saturate(0.5);
-          z-index: 0;
-        }
-
-        .scene-overlay {
-          position: fixed;
-          inset: 0;
-          background: radial-gradient(ellipse at center, transparent 0%, rgba(7,6,4,0.75) 80%);
-          z-index: 1;
+          padding: 48px 16px;
+          background-color: var(--vellum);
+          background-image: radial-gradient(120% 80% at 50% -10%, #2e261a 0%, #1d1810 70%);
         }
 
         .page-wrap {
           position: relative;
-          z-index: 2;
           width: 100%;
-          max-width: 700px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .page-header {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          margin-bottom: 20px;
-        }
-
-        .header-logo {
-          max-height: 80px;
-          object-fit: contain;
-          filter: drop-shadow(0 0 14px rgba(201,168,76,0.45));
+          max-width: 720px;
         }
 
         .main-card {
           width: 100%;
-          padding: 32px;
+          padding: 40px 44px 0;
+        }
+
+        /* ── Header ── */
+        .card-header {
+          text-align: center;
+          margin-bottom: 28px;
+        }
+
+        .eyebrow {
+          font-family: var(--font-ui);
+          font-size: 0.72rem;
+          letter-spacing: 0.34em;
+          text-transform: uppercase;
+          color: var(--gold);
+        }
+
+        .card-title {
+          font-family: var(--font-heading);
+          font-weight: 700;
+          font-size: 1.85rem;
+          letter-spacing: 0.05em;
+          color: var(--ink);
+          margin: 12px 0 6px;
+        }
+
+        .card-sub {
+          font-family: var(--font-body);
+          font-style: italic;
+          font-size: 1.05rem;
+          color: var(--ink-body);
+          margin: 0;
         }
 
         /* ── Steps bar ── */
@@ -254,180 +255,184 @@ export default function Cadastro() {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 0;
-          margin-bottom: 28px;
+          margin-bottom: 30px;
         }
 
         .step {
           display: flex;
           align-items: center;
-          gap: 8px;
-          opacity: 0.35;
+          gap: 10px;
+          opacity: 0.55;
           transition: opacity 0.3s;
         }
 
         .step.active { opacity: 1; }
 
         .step-num {
-          width: 28px;
-          height: 28px;
+          width: 30px;
+          height: 30px;
           border-radius: 50%;
-          border: 1px solid var(--gold-dark);
+          border: 1.5px solid var(--gold-leaf);
           display: flex;
           align-items: center;
           justify-content: center;
           font-family: var(--font-ui);
-          font-size: 0.7rem;
-          color: var(--gold);
+          font-size: 0.8rem;
+          color: var(--gold-dark);
         }
 
         .step.active .step-num {
-          background: var(--gold-dark);
-          border-color: var(--gold);
-          box-shadow: 0 0 10px var(--gold-glow);
+          background: #8a6d2e;
+          border-color: var(--gold-bright);
+          color: var(--parchment-hi);
+          box-shadow: 0 0 0 4px rgba(216, 182, 94, 0.18);
         }
 
         .step-label {
           font-family: var(--font-ui);
-          font-size: 0.7rem;
-          letter-spacing: 0.1em;
+          font-size: 0.72rem;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--text-dim);
+          color: var(--ink-dim);
         }
 
+        .step.active .step-label { color: var(--ink); }
+
         .step-line {
-          width: 48px;
+          width: 64px;
           height: 1px;
-          background: linear-gradient(90deg, var(--gold-dark), transparent);
-          margin: 0 8px;
+          background: linear-gradient(90deg, #b09040, #d8b65e);
+          margin: 0 16px;
         }
 
         /* ── Form fields ── */
-        .field-group {
-          margin-bottom: 18px;
-        }
+        .field-group { margin-bottom: 18px; }
 
         .submit-btn {
           width: 100%;
-          padding: 12px;
-          margin-top: 4px;
-          font-size: 0.85rem;
+          padding: 14px;
+          margin-top: 6px;
         }
 
-        /* ── House selection ── */
-        .choose-label {
-          font-family: var(--font-body);
-          font-style: italic;
-          color: var(--text-dim);
-          text-align: center;
-          margin-bottom: 20px;
-          font-size: 1rem;
-        }
-
+        /* ── Houses grid ── */
         .houses-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 12px;
-          margin-bottom: 24px;
+          gap: 16px;
         }
 
         .house-card {
           position: relative;
-          background: rgba(10, 8, 4, 0.8);
-          border: 1px solid var(--border-dark);
-          border-radius: var(--radius-md);
-          padding: 12px 8px;
-          cursor: pointer;
-          transition: all 0.25s;
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 6px;
+          gap: 12px;
+          padding: 18px 14px 16px;
+          border-radius: var(--radius-md);
+          border: 1px solid var(--border-dark);
+          background: rgba(255, 251, 240, 0.5);
+          box-shadow: 0 2px 0 rgba(120, 90, 40, 0.06), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+          cursor: pointer;
+          transition: var(--transition);
           text-align: center;
         }
 
         .house-card:hover {
           border-color: var(--border-mid);
-          background: var(--bg-hover);
           transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+          box-shadow: 0 10px 22px -12px rgba(74, 58, 32, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
         }
 
         .house-card.selected {
-          border-color: var(--gold);
-          background: var(--bg-active);
-          box-shadow: 0 0 18px var(--gold-glow), inset 0 0 12px rgba(201,168,76,0.06);
+          border: 2px solid var(--gold-leaf);
+          box-shadow: 0 0 0 1px rgba(216, 182, 94, 0.4), 0 10px 24px -10px rgba(122, 42, 34, 0.5);
+        }
+
+        .house-seal {
+          position: absolute;
+          top: -11px;
+          right: -11px;
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
+          background: radial-gradient(circle at 36% 32%, #b8463a, #8a2a22 60%, #5e1c16 100%);
+          box-shadow: 0 3px 7px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.25);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: var(--font-ui);
+          font-size: 0.85rem;
+          color: #f3d9a0;
+          animation: fadeIn 0.2s;
+        }
+
+        .house-img-frame {
+          width: 96px;
+          height: 118px;
+          border-radius: var(--radius-sm);
+          overflow: hidden;
+          border: 1px solid rgba(74, 58, 32, 0.45);
+          box-shadow: 0 6px 14px -6px rgba(0, 0, 0, 0.45);
         }
 
         .house-img {
-          width: 70px;
-          height: 70px;
+          width: 100%;
+          height: 100%;
           object-fit: cover;
-          border-radius: var(--radius-sm);
-          filter: brightness(0.85);
-          transition: filter 0.2s;
-        }
-
-        .house-card:hover .house-img,
-        .house-card.selected .house-img {
-          filter: brightness(1);
+          display: block;
         }
 
         .house-name {
           font-family: var(--font-ui);
-          font-size: 0.72rem;
-          letter-spacing: 0.1em;
-          color: var(--gold);
+          font-size: 0.8rem;
+          font-weight: 600;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
+          color: var(--ink);
         }
 
         .house-lema {
           font-family: var(--font-body);
           font-style: italic;
-          font-size: 0.65rem;
-          color: var(--text-faint);
-          line-height: 1.3;
-          display: none;
-        }
-
-        .house-card.selected .house-lema {
-          display: block;
-          color: var(--text-dim);
-        }
-
-        .house-check {
-          position: absolute;
-          top: 6px;
-          right: 8px;
-          color: var(--gold-bright);
-          font-size: 0.8rem;
-          animation: fadeIn 0.2s;
+          font-size: 0.85rem;
+          color: var(--ink-dim);
+          line-height: 1.35;
+          min-height: 36px;
         }
 
         /* ── Bottom row ── */
         .btn-row {
           display: flex;
-          gap: 12px;
+          align-items: center;
+          gap: 14px;
+          margin-top: 34px;
         }
 
-        .btn-row .btn-got:first-child {
+        .btn-row :global(.btn-got:first-child) {
           flex: 0 0 auto;
-          padding: 12px 20px;
         }
 
-        .btn-row .btn-got:last-child {
+        .btn-row :global(.btn-got:last-child) {
           flex: 1;
-          padding: 12px;
-          font-size: 0.85rem;
+          padding: 14px;
         }
 
-        /* ── Back link ── */
-        .back-link {
-          margin-top: 20px;
+        /* ── Foot ── */
+        .card-foot {
+          text-align: center;
+          padding: 24px 0 22px;
           font-family: var(--font-body);
-          font-size: 0.9rem;
-          color: var(--text-dim);
+          font-style: italic;
+          font-size: 0.95rem;
+          color: var(--ink-faint);
         }
+
+        .foot-link {
+          color: #8a6d2e;
+          text-decoration: none;
+          border-bottom: 1px solid rgba(138, 109, 46, 0.5);
+        }
+        .foot-link:hover { color: var(--gold-dark); }
       `}</style>
     </>
   );
