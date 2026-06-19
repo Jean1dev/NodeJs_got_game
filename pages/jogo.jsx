@@ -12,7 +12,9 @@ function SkillBar({ label, value, icon }) {
   return (
     <div className="skill-bar-wrap">
       <div className="skill-header">
-        <img src={icon} alt={label} className="skill-icon" />
+        <span className="skill-icon-frame">
+          <img src={icon} alt={label} className="skill-icon" />
+        </span>
         <span className="skill-label">{label}</span>
         <span className="skill-value">{value ?? '—'}</span>
       </div>
@@ -70,15 +72,9 @@ export default function Jogo({ usuario, casa }) {
       </Head>
 
       <div className="hud">
-        {/* ════ BACKGROUND ════ */}
-        <div className="hud-bg" />
-        <div className="hud-vignette" />
-
         {/* ════ TOP BAR ════ */}
         <header className="top-bar">
-          <div className="tb-logo">
-            <img src="/images/game_of_thrones_logo.jpg" alt="Got Game" className="tb-logo-img" />
-          </div>
+          <div className="tb-logo">GOT&nbsp;GAME</div>
 
           <div className="tb-skills">
             <SkillBar label="Temor"     value={stats?.temor}     icon="/images/habilidades/temor.jpg" />
@@ -104,11 +100,12 @@ export default function Jogo({ usuario, casa }) {
                 alt={`Casa ${casa}`}
                 className="house-sigil"
               />
-              <div className="house-glow" />
             </div>
 
-            <div className="house-name-label">Casa {casa}</div>
-            <div className="player-name">{usuario}</div>
+            <div className="house-id">
+              <div className="house-name-label">Casa {casa}</div>
+              <div className="player-name">{usuario}</div>
+            </div>
 
             <div className="sidebar-divider" />
 
@@ -117,7 +114,9 @@ export default function Jogo({ usuario, casa }) {
                 className={`nav-item ${painel === 'aldeoes' ? 'active' : ''}`}
                 onClick={() => setPainel(painel === 'aldeoes' ? null : 'aldeoes')}
               >
-                <img src="/images/outros/suditos.jpg" alt="Súditos" className="nav-icon" />
+                <span className="nav-icon-frame">
+                  <img src="/images/outros/suditos.jpg" alt="Súditos" className="nav-icon" />
+                </span>
                 <div className="nav-info">
                   <span className="nav-label">Súditos</span>
                   <span className="nav-count">{stats?.suditos ?? '…'}</span>
@@ -128,10 +127,12 @@ export default function Jogo({ usuario, casa }) {
                 className={`nav-item ${painel === 'pergaminhos' ? 'active' : ''}`}
                 onClick={() => setPainel(painel === 'pergaminhos' ? null : 'pergaminhos')}
               >
-                <img src="/images/outros/pergaminho.jpg" alt="Pergaminhos" className="nav-icon" />
+                <span className="nav-icon-frame">
+                  <img src="/images/outros/pergaminho.jpg" alt="Pergaminhos" className="nav-icon" />
+                </span>
                 <div className="nav-info">
                   <span className="nav-label">Pergaminhos</span>
-                  <span className="nav-count">Ações</span>
+                  <span className="nav-sub">Ações ativas</span>
                 </div>
               </button>
             </nav>
@@ -139,7 +140,9 @@ export default function Jogo({ usuario, casa }) {
             <div className="sidebar-divider" />
 
             <div className="coins-display">
-              <img src="/images/outros/moeda.jpg" alt="Moedas" className="coin-icon" />
+              <span className="coin-frame">
+                <img src="/images/outros/moeda.jpg" alt="Moedas" className="coin-icon" />
+              </span>
               <div>
                 <div className="coins-label">Tesouro</div>
                 <div className="coins-value">{stats?.moeda ?? '…'} <span className="coins-unit">G</span></div>
@@ -184,49 +187,36 @@ export default function Jogo({ usuario, casa }) {
           flex-direction: column;
           height: 100vh;
           overflow: hidden;
+          background-color: var(--vellum);
         }
 
-        .hud-bg {
-          position: fixed;
-          inset: 0;
-          background-image: url('/images/mapa.gif');
-          background-size: cover;
-          background-position: center;
-          filter: brightness(0.28) saturate(0.5);
-          z-index: 0;
-        }
-
-        .hud-vignette {
-          position: fixed;
-          inset: 0;
-          background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.65) 100%);
-          z-index: 1;
-        }
-
-        /* ── Top Bar ── */
+        /* ── Top Bar (leather) ── */
         .top-bar {
           position: relative;
           z-index: 10;
           display: flex;
           align-items: center;
-          gap: 16px;
-          padding: 0 20px;
-          height: 56px;
-          background: linear-gradient(180deg, rgba(5,4,2,0.98) 0%, rgba(10,8,5,0.92) 100%);
-          border-bottom: 1px solid var(--border-mid);
-          box-shadow: 0 2px 20px rgba(0,0,0,0.8), 0 1px 0 var(--border-dark);
+          gap: 28px;
+          padding: 0 22px;
+          height: 64px;
           flex-shrink: 0;
+          background: linear-gradient(180deg, #cdb787, #bda468);
+          border-bottom: 1px solid var(--gold-dark);
+          box-shadow: inset 0 -2px 6px rgba(74, 58, 32, 0.25), inset 0 1px 0 rgba(255, 250, 235, 0.5);
         }
 
-        .tb-logo-img {
-          height: 36px;
-          object-fit: contain;
-          filter: drop-shadow(0 0 8px rgba(201,168,76,0.4));
+        .tb-logo {
+          font-family: var(--font-ui);
+          font-size: 0.95rem;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          color: var(--ink);
+          white-space: nowrap;
         }
 
         .tb-skills {
           display: flex;
-          gap: 12px;
+          gap: 26px;
           flex: 1;
           justify-content: center;
         }
@@ -236,75 +226,83 @@ export default function Jogo({ usuario, casa }) {
           flex-direction: column;
           align-items: center;
           gap: 1px;
-          padding: 6px 10px;
-          background: transparent;
-          border: 1px solid rgba(139,26,26,0.4);
+          padding: 7px 13px;
+          background: rgba(122, 42, 34, 0.1);
+          border: 1px solid rgba(122, 42, 34, 0.5);
           border-radius: var(--radius-sm);
-          color: #c06060;
+          color: var(--red-wax);
           cursor: pointer;
           transition: var(--transition);
           font-family: var(--font-ui);
         }
 
         .tb-logout:hover {
-          border-color: var(--red-fire);
-          color: #e08080;
-          box-shadow: 0 0 12px rgba(192,57,43,0.3);
+          background: rgba(122, 42, 34, 0.2);
+          border-color: var(--red-wax);
         }
 
-        .tb-logout-icon { font-size: 1rem; }
+        .tb-logout-icon { font-size: 0.85rem; line-height: 1; }
         .tb-logout-label { font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; }
 
         /* ── Skill Bar ── */
         :global(.skill-bar-wrap) {
           display: flex;
           flex-direction: column;
-          gap: 3px;
-          min-width: 90px;
+          gap: 5px;
+          min-width: 118px;
         }
 
         :global(.skill-header) {
           display: flex;
           align-items: center;
-          gap: 5px;
+          gap: 7px;
+        }
+
+        :global(.skill-icon-frame) {
+          width: 20px;
+          height: 20px;
+          border-radius: 3px;
+          overflow: hidden;
+          flex-shrink: 0;
+          border: 1px solid rgba(74, 58, 32, 0.5);
         }
 
         :global(.skill-icon) {
-          width: 18px;
-          height: 18px;
-          border-radius: 3px;
+          width: 100%;
+          height: 100%;
           object-fit: cover;
-          opacity: 0.85;
+          display: block;
         }
 
         :global(.skill-label) {
           font-family: var(--font-ui);
           font-size: 0.6rem;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: var(--text-dim);
+          color: var(--ink-leather);
           flex: 1;
         }
 
         :global(.skill-value) {
           font-family: var(--font-ui);
-          font-size: 0.65rem;
-          color: var(--gold);
+          font-size: 0.66rem;
+          color: var(--gold-dark);
         }
 
         :global(.skill-track) {
-          height: 3px;
-          background: rgba(255,255,255,0.07);
-          border-radius: 2px;
+          height: 4px;
+          background: rgba(44, 33, 20, 0.2);
+          border-radius: 3px;
           overflow: hidden;
+          box-shadow: inset 0 1px 2px rgba(44, 33, 20, 0.3);
         }
 
         :global(.skill-fill) {
           height: 100%;
-          background: linear-gradient(90deg, var(--gold-dark), var(--gold));
-          border-radius: 2px;
+          background: linear-gradient(90deg, #8a6d2e, #c2a154);
+          border-radius: 3px;
           transition: width 0.6s ease;
-          box-shadow: 0 0 6px var(--gold-glow);
+          box-shadow: 0 0 5px rgba(194, 161, 84, 0.6);
         }
 
         /* ── Main Area ── */
@@ -316,70 +314,61 @@ export default function Jogo({ usuario, casa }) {
           overflow: hidden;
         }
 
-        /* ── Sidebar ── */
+        /* ── Sidebar (leather) ── */
         .sidebar {
-          width: 180px;
+          width: 208px;
           flex-shrink: 0;
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 16px 10px;
-          background: linear-gradient(180deg, rgba(5,4,2,0.95) 0%, rgba(8,6,3,0.9) 100%);
-          border-right: 1px solid var(--border-dark);
+          gap: 16px;
+          padding: 22px 16px;
+          background: linear-gradient(180deg, #c9b487, #bca566);
+          border-right: 1px solid var(--gold-dark);
+          box-shadow: inset -2px 0 6px rgba(74, 58, 32, 0.2);
           overflow-y: auto;
-          gap: 12px;
         }
 
         .house-sigil-wrap {
           position: relative;
-          width: 110px;
-          height: 110px;
+          width: 120px;
+          height: 144px;
           flex-shrink: 0;
+          border-radius: var(--radius-sm);
+          overflow: hidden;
+          border: 1px solid rgba(74, 58, 32, 0.5);
+          box-shadow: 0 8px 18px -8px rgba(0, 0, 0, 0.5), inset 0 0 0 2px rgba(255, 250, 235, 0.35);
         }
 
         .house-sigil {
-          width: 110px;
-          height: 110px;
+          width: 100%;
+          height: 100%;
           object-fit: cover;
-          border-radius: var(--radius-md);
-          border: 1px solid var(--border-dark);
-          position: relative;
-          z-index: 1;
-          transition: var(--transition);
+          display: block;
         }
 
-        .house-glow {
-          position: absolute;
-          inset: -4px;
-          border-radius: var(--radius-lg);
-          background: transparent;
-          box-shadow: 0 0 20px var(--gold-glow);
-          opacity: 0.5;
-          z-index: 0;
-          animation: pulseGold 4s infinite;
-        }
+        .house-id { text-align: center; }
 
         .house-name-label {
           font-family: var(--font-ui);
-          font-size: 0.72rem;
-          letter-spacing: 0.12em;
+          font-size: 0.78rem;
+          font-weight: 600;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--gold);
-          text-align: center;
+          color: var(--ink);
         }
 
         .player-name {
           font-family: var(--font-body);
           font-style: italic;
-          font-size: 0.85rem;
-          color: var(--text-dim);
-          text-align: center;
+          font-size: 0.9rem;
+          color: #5e4d30;
         }
 
         .sidebar-divider {
-          width: 80%;
+          width: 78%;
           height: 1px;
-          background: linear-gradient(90deg, transparent, var(--border-mid), transparent);
+          background: linear-gradient(90deg, transparent, rgba(74, 58, 32, 0.5), transparent);
         }
 
         /* ── Nav items ── */
@@ -387,15 +376,15 @@ export default function Jogo({ usuario, casa }) {
           width: 100%;
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          gap: 8px;
         }
 
         .nav-item {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 11px;
           width: 100%;
-          padding: 9px 10px;
+          padding: 10px 12px;
           background: transparent;
           border: 1px solid transparent;
           border-radius: var(--radius-sm);
@@ -405,22 +394,29 @@ export default function Jogo({ usuario, casa }) {
         }
 
         .nav-item:hover {
-          background: var(--bg-hover);
-          border-color: var(--border-dark);
+          background: rgba(255, 251, 240, 0.3);
+          border-color: rgba(74, 58, 32, 0.18);
         }
 
         .nav-item.active {
-          background: var(--bg-active);
-          border-color: var(--border-mid);
-          box-shadow: inset 0 0 12px rgba(201,168,76,0.06);
+          background: rgba(255, 251, 240, 0.45);
+          border-color: rgba(74, 58, 32, 0.22);
+        }
+
+        .nav-icon-frame {
+          width: 30px;
+          height: 30px;
+          border-radius: var(--radius-sm);
+          overflow: hidden;
+          flex-shrink: 0;
+          border: 1px solid rgba(74, 58, 32, 0.4);
         }
 
         .nav-icon {
-          width: 28px;
-          height: 28px;
+          width: 100%;
+          height: 100%;
           object-fit: cover;
-          border-radius: var(--radius-sm);
-          flex-shrink: 0;
+          display: block;
         }
 
         .nav-info {
@@ -431,64 +427,83 @@ export default function Jogo({ usuario, casa }) {
 
         .nav-label {
           font-family: var(--font-ui);
-          font-size: 0.65rem;
+          font-size: 0.62rem;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: var(--text-dim);
+          color: #5e4d30;
         }
 
         .nav-count {
           font-family: var(--font-ui);
+          font-size: 0.9rem;
+          color: var(--gold-dark);
+        }
+
+        .nav-sub {
+          font-family: var(--font-body);
+          font-style: italic;
           font-size: 0.8rem;
-          color: var(--gold);
+          color: var(--ink-faint);
         }
 
         /* ── Coins ── */
         .coins-display {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 12px;
           width: 100%;
-          padding: 10px;
-          background: rgba(201,168,76,0.06);
-          border: 1px solid var(--border-dark);
-          border-radius: var(--radius-sm);
+          padding: 12px;
+          background: rgba(154, 123, 52, 0.14);
+          border: 1px solid rgba(154, 123, 52, 0.4);
+          border-radius: var(--radius-md);
+          box-shadow: inset 0 0 12px rgba(154, 123, 52, 0.1);
+        }
+
+        .coin-frame {
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
+          overflow: hidden;
+          flex-shrink: 0;
+          border: 1px solid rgba(122, 95, 36, 0.6);
+          box-shadow: 0 0 8px rgba(194, 161, 84, 0.4);
         }
 
         .coin-icon {
-          width: 32px;
-          height: 32px;
-          border-radius: var(--radius-sm);
+          width: 100%;
+          height: 100%;
           object-fit: cover;
-          filter: drop-shadow(0 0 6px rgba(201,168,76,0.5));
+          display: block;
         }
 
         .coins-label {
           font-family: var(--font-ui);
-          font-size: 0.6rem;
-          letter-spacing: 0.1em;
+          font-size: 0.56rem;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: var(--text-faint);
+          color: var(--ink-faint);
         }
 
         .coins-value {
           font-family: var(--font-ui);
-          font-size: 1rem;
-          color: var(--gold-bright);
+          font-size: 1.1rem;
+          color: var(--gold-dark);
           line-height: 1;
+          white-space: nowrap;
         }
 
         .coins-unit {
-          font-size: 0.65rem;
-          color: var(--gold-dark);
+          font-size: 0.72rem;
+          color: var(--gold);
         }
 
-        /* ── Center panel ── */
+        /* ── Center panel (parchment) ── */
         .center-panel {
           flex: 1;
           overflow-y: auto;
-          padding: 24px;
-          background: rgba(0,0,0,0.3);
+          padding: 32px 40px;
+          background-color: var(--parchment);
+          background-image: var(--parchment-fill);
         }
 
         /* ── Toast ── */
@@ -504,15 +519,15 @@ export default function Jogo({ usuario, casa }) {
         }
 
         :global(.toast-container.sucesso) {
-          background: rgba(25, 80, 40, 0.4);
-          border-color: #4caf50;
-          color: #a0d8a8;
+          background: rgba(74, 110, 60, 0.14);
+          border-color: #4a6e3c;
+          color: #3c5a30;
         }
 
         :global(.toast-container.erro) {
-          background: rgba(100, 20, 20, 0.4);
-          border-color: var(--red-fire);
-          color: #f4a0a0;
+          background: rgba(138, 42, 34, 0.12);
+          border-color: var(--red-wax);
+          color: var(--red-deep);
         }
 
         :global(.toast-icon) {
@@ -546,13 +561,13 @@ export default function Jogo({ usuario, casa }) {
 function WelcomeScreen({ casa }) {
   return (
     <div className="welcome">
-      <img src="/images/game_of_thrones_logo.jpg" alt="Got Game" className="w-logo" />
+      <div className="w-seal">✦</div>
       <h2 className="w-title">Bem-vindo ao seu domínio</h2>
       <p className="w-subtitle">
-        Casa {casa} aguarda suas ordens, milorde.
+        A Casa {casa} aguarda suas ordens, milorde.
       </p>
       <p className="w-hint">
-        Use o painel à esquerda para ordenar seus súditos ou consultar seus pergaminhos.
+        Use o painel à esquerda para ordenar seus súditos ou consultar os pergaminhos das ações em andamento.
       </p>
 
       <style jsx>{`
@@ -567,34 +582,45 @@ function WelcomeScreen({ casa }) {
           animation: fadeIn 0.5s ease;
         }
 
-        .w-logo {
-          max-width: 200px;
-          opacity: 0.7;
-          filter: drop-shadow(0 0 20px rgba(201,168,76,0.3));
+        .w-seal {
+          width: 62px;
+          height: 62px;
+          border-radius: 50%;
+          background: radial-gradient(circle at 36% 32%, #b8463a, #8a2a22 60%, #5e1c16 100%);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35), inset 0 2px 5px rgba(255, 255, 255, 0.25);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: var(--font-ui);
+          font-size: 1.6rem;
+          color: #f3d9a0;
           margin-bottom: 24px;
         }
 
         .w-title {
           font-family: var(--font-heading);
-          font-size: 1.4rem;
-          color: var(--gold);
-          letter-spacing: 0.1em;
-          margin-bottom: 8px;
+          font-weight: 700;
+          font-size: 1.7rem;
+          color: var(--ink);
+          letter-spacing: 0.05em;
+          margin: 0 0 10px;
         }
 
         .w-subtitle {
           font-family: var(--font-body);
           font-style: italic;
-          font-size: 1.1rem;
-          color: var(--text-dim);
-          margin-bottom: 16px;
+          font-size: 1.2rem;
+          color: var(--ink-body);
+          margin: 0 0 8px;
         }
 
         .w-hint {
           font-family: var(--font-body);
-          font-size: 0.85rem;
-          color: var(--text-faint);
-          max-width: 360px;
+          font-size: 0.95rem;
+          color: var(--ink-faint);
+          max-width: 400px;
+          line-height: 1.55;
+          margin: 0;
         }
       `}</style>
     </div>
